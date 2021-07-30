@@ -2,22 +2,22 @@ import {
   InfoCircleOutlined,
   PlusCircleOutlined,
   SettingOutlined,
-} from '@ant-design/icons';
-import { Button, Col, Menu, Popover, Row, Select } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import logo from '../assets/logo.svg';
-import styled from 'styled-components';
-import { useWallet } from '../utils/wallet';
-import { ENDPOINTS, useConnectionConfig } from '../utils/connection';
-import Settings from './Settings';
-import CustomClusterEndpointDialog from './CustomClusterEndpointDialog';
-import { EndpointInfo } from '../utils/types';
-import { notify } from '../utils/notifications';
-import { Connection } from '@solana/web3.js';
-import WalletConnect from './WalletConnect';
-import AppSearch from './AppSearch';
-import { getTradePageUrl } from '../utils/markets';
+} from "@ant-design/icons";
+import { Button, Col, Menu, Popover, Row, Select } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import logo from "../assets/logo.png";
+import styled from "styled-components";
+import { useWallet } from "../utils/wallet";
+import { ENDPOINTS, useConnectionConfig } from "../utils/connection";
+import Settings from "./Settings";
+import CustomClusterEndpointDialog from "./CustomClusterEndpointDialog";
+import { EndpointInfo } from "../utils/types";
+import { notify } from "../utils/notifications";
+import { Connection } from "@solana/web3.js";
+import WalletConnect from "./WalletConnect";
+import AppSearch from "./AppSearch";
+import { getTradePageUrl } from "../utils/markets";
 
 const Wrapper = styled.div`
   background-color: #0d1017;
@@ -40,14 +40,15 @@ const LogoWrapper = styled.div`
 `;
 
 const EXTERNAL_LINKS = {
-  '/learn': 'https://docs.projectserum.com/trade-on-serum-dex/trade-on-serum-dex-1',
-  '/add-market': 'https://serum-academy.com/en/add-market/',
-  '/wallet-support': 'https://serum-academy.com/en/wallet-support',
-  '/dex-list': 'https://serum-academy.com/en/dex-list/',
-  '/developer-resources': 'https://serum-academy.com/en/developer-resources/',
-  '/explorer': 'https://solscan.io',
-  '/srm-faq': 'https://projectserum.com/srm-faq',
-  '/swap': 'https://swap.projectserum.com',
+  "/learn":
+    "https://docs.projectserum.com/trade-on-serum-dex/trade-on-serum-dex-1",
+  "/add-market": "https://serum-academy.com/en/add-market/",
+  "/wallet-support": "https://serum-academy.com/en/wallet-support",
+  "/dex-list": "https://serum-academy.com/en/dex-list/",
+  "/developer-resources": "https://serum-academy.com/en/developer-resources/",
+  "/explorer": "https://solscan.io",
+  "/srm-faq": "https://projectserum.com/srm-faq",
+  "/swap": "https://swap.projectserum.com",
 };
 
 export default function TopBar() {
@@ -71,17 +72,17 @@ export default function TopBar() {
         history.push(e.key);
       }
     },
-    [history],
+    [history]
   );
 
   const onAddCustomEndpoint = (info: EndpointInfo) => {
     const existingEndpoint = availableEndpoints.some(
-      (e) => e.endpoint === info.endpoint,
+      (e) => e.endpoint === info.endpoint
     );
     if (existingEndpoint) {
       notify({
         message: `An endpoint with the given url already exists`,
-        type: 'error',
+        type: "error",
       });
       return;
     }
@@ -90,12 +91,12 @@ export default function TopBar() {
       console.log(`Connection to ${info.endpoint} failed: ${e}`);
       notify({
         message: `Failed to connect to ${info.endpoint}`,
-        type: 'error',
+        type: "error",
       });
     };
 
     try {
-      const connection = new Connection(info.endpoint, 'recent');
+      const connection = new Connection(info.endpoint, "recent");
       connection
         .getEpochInfo()
         .then((result) => {
@@ -123,11 +124,11 @@ export default function TopBar() {
         setEndpoint(ENDPOINTS[0].endpoint);
       }
     };
-    window.addEventListener('beforeunload', handler);
-    return () => window.removeEventListener('beforeunload', handler);
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
   }, [endpointInfoCustom, setEndpoint]);
 
-  const tradePageUrl = location.pathname.startsWith('/market/')
+  const tradePageUrl = location.pathname.startsWith("/market/")
     ? location.pathname
     : getTradePageUrl();
 
@@ -142,27 +143,27 @@ export default function TopBar() {
       <Wrapper>
         <LogoWrapper onClick={() => history.push(tradePageUrl)}>
           <img src={logo} alt="" />
-          {'SERUM'}
+          {"KEKW "}
         </LogoWrapper>
         <Menu
           mode="horizontal"
           onClick={handleClick}
           selectedKeys={[location.pathname]}
           style={{
-            borderBottom: 'none',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'flex-end',
+            borderBottom: "none",
+            backgroundColor: "transparent",
+            display: "flex",
+            alignItems: "flex-end",
             flex: 1,
           }}
         >
-          <Menu.Item key={tradePageUrl} style={{ margin: '0 10px 0 20px' }}>
+          <Menu.Item key={tradePageUrl} style={{ margin: "0 10px 0 20px" }}>
             TRADE
           </Menu.Item>
           {!searchFocussed && (
-            <Menu.Item key="/swap" style={{ margin: '0 10px' }}>
+            <Menu.Item key="/swap" style={{ margin: "0 10px" }}>
               <a
-                href={EXTERNAL_LINKS['/swap']}
+                href={EXTERNAL_LINKS["/swap"]}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -170,23 +171,23 @@ export default function TopBar() {
               </a>
             </Menu.Item>
           )}
-          {connected && (!searchFocussed || location.pathname === '/balances') && (
-            <Menu.Item key="/balances" style={{ margin: '0 10px' }}>
+          {connected && (!searchFocussed || location.pathname === "/balances") && (
+            <Menu.Item key="/balances" style={{ margin: "0 10px" }}>
               BALANCES
             </Menu.Item>
           )}
-          {connected && (!searchFocussed || location.pathname === '/orders') && (
-            <Menu.Item key="/orders" style={{ margin: '0 10px' }}>
+          {connected && (!searchFocussed || location.pathname === "/orders") && (
+            <Menu.Item key="/orders" style={{ margin: "0 10px" }}>
               ORDERS
             </Menu.Item>
           )}
-          {connected && (!searchFocussed || location.pathname === '/convert') && (
-            <Menu.Item key="/convert" style={{ margin: '0 10px' }}>
+          {connected && (!searchFocussed || location.pathname === "/convert") && (
+            <Menu.Item key="/convert" style={{ margin: "0 10px" }}>
               CONVERT
             </Menu.Item>
           )}
-          {(!searchFocussed || location.pathname === '/list-new-market') && (
-            <Menu.Item key="/list-new-market" style={{ margin: '0 10px' }}>
+          {(!searchFocussed || location.pathname === "/list-new-market") && (
+            <Menu.Item key="/list-new-market" style={{ margin: "0 10px" }}>
               ADD MARKET
             </Menu.Item>
           )}
@@ -194,13 +195,13 @@ export default function TopBar() {
             <Menu.SubMenu
               title="LEARN"
               onTitleClick={() =>
-                window.open(EXTERNAL_LINKS['/learn'], '_blank')
+                window.open(EXTERNAL_LINKS["/learn"], "_blank")
               }
-              style={{ margin: '0 0px 0 10px' }}
+              style={{ margin: "0 0px 0 10px" }}
             >
               <Menu.Item key="/add-market">
                 <a
-                  href={EXTERNAL_LINKS['/add-market']}
+                  href={EXTERNAL_LINKS["/add-market"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -209,7 +210,7 @@ export default function TopBar() {
               </Menu.Item>
               <Menu.Item key="/wallet-support">
                 <a
-                  href={EXTERNAL_LINKS['/wallet-support']}
+                  href={EXTERNAL_LINKS["/wallet-support"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -218,7 +219,7 @@ export default function TopBar() {
               </Menu.Item>
               <Menu.Item key="/dex-list">
                 <a
-                  href={EXTERNAL_LINKS['/dex-list']}
+                  href={EXTERNAL_LINKS["/dex-list"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -227,7 +228,7 @@ export default function TopBar() {
               </Menu.Item>
               <Menu.Item key="/developer-resources">
                 <a
-                  href={EXTERNAL_LINKS['/developer-resources']}
+                  href={EXTERNAL_LINKS["/developer-resources"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -236,7 +237,7 @@ export default function TopBar() {
               </Menu.Item>
               <Menu.Item key="/explorer">
                 <a
-                  href={EXTERNAL_LINKS['/explorer']}
+                  href={EXTERNAL_LINKS["/explorer"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -245,7 +246,7 @@ export default function TopBar() {
               </Menu.Item>
               <Menu.Item key="/srm-faq">
                 <a
-                  href={EXTERNAL_LINKS['/srm-faq']}
+                  href={EXTERNAL_LINKS["/srm-faq"]}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -257,8 +258,8 @@ export default function TopBar() {
         </Menu>
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
+            display: "flex",
+            alignItems: "center",
             paddingRight: 5,
           }}
         >
@@ -266,7 +267,7 @@ export default function TopBar() {
             onFocus={() => setSearchFocussed(true)}
             onBlur={() => setSearchFocussed(false)}
             focussed={searchFocussed}
-            width={searchFocussed ? '350px' : '35px'}
+            width={searchFocussed ? "350px" : "35px"}
           />
         </div>
         <div>
@@ -277,7 +278,7 @@ export default function TopBar() {
           >
             <Col>
               <PlusCircleOutlined
-                style={{ color: '#2abdd2' }}
+                style={{ color: "#2abdd2" }}
                 onClick={() => setAddEndpointVisible(true)}
               />
             </Col>
@@ -288,14 +289,14 @@ export default function TopBar() {
                 title="URL"
                 trigger="hover"
               >
-                <InfoCircleOutlined style={{ color: '#2abdd2' }} />
+                <InfoCircleOutlined style={{ color: "#2abdd2" }} />
               </Popover>
             </Col>
             <Col>
               <Select
                 onSelect={setEndpoint}
                 value={endpoint}
-                style={{ marginRight: 8, width: '150px' }}
+                style={{ marginRight: 8, width: "150px" }}
               >
                 {availableEndpoints.map(({ name, endpoint }) => (
                   <Select.Option value={endpoint} key={endpoint}>
